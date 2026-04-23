@@ -1,15 +1,25 @@
 services:
-  devcontainer:
-    image: ghcr.io/tjarbo/pretalx-devcontainer/devcontainer:v2
-    network_mode: "service:oidc-provider-mock"
-    volumes:
-      - ../:/workspace:cached
-    command: sleep infinity
-  
   oidc-provider-mock:
-    image: ghcr.io/tjarbo/oidc-provider-mock:f96d2559e57533ac45587973de7a51c1dfbb9473
+    image: ghcr.io/geigerzaehler/oidc-provider-mock:0.4.1
+    network_mode: "service:devcontainer"
     ports:
       - "9400:9400"
     command:
       - "--user-claims"
-      - '{"sub": "alice", "email": "alice@dev.pretalx.local", "name": "Alice"}'
+      - '{"sub": "alice", "email": "alice@example.com", "name": "Alice Example"}'
+      - --user-claims
+      - '{"sub": "bob", "email": "bob@example.com", "name": "Bob Example"}'
+
+  saml-provider-mock:
+    image: boxyhq/mock-saml
+    network_mode: "service:devcontainer"
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./saml-provider-mock.env
+  
+  devcontainer:
+    image: ghcr.io/tjarbo/pretalx-devcontainer/devcontainer:v2
+    volumes:
+      - ../:/workspace:cached
+    command: sleep infinity

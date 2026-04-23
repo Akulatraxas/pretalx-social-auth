@@ -1,5 +1,5 @@
 #!/bin/sh
 # Plugin specific post-create.sh script.
 
-echo "Nothing to do";
+pip install python3-saml
 exit 0;
