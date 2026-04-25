@@ -27,7 +27,6 @@ def pretalx_sso_settings(sender, request, **kwargs):
 
 @receiver(auth_html)
 def render_login_auth_options(sender, request, next_url=None, **kwargs):
-    print("render_login_auth_options")
     context = {}
     context["url_params"] = ""
     context["backends"] = {
@@ -35,12 +34,18 @@ def render_login_auth_options(sender, request, next_url=None, **kwargs):
         for class_name, be_class in all_backends().items()
     }
 
-    next_path = request.GET.get("next", next_url)
+    request_obj = request if hasattr(request, "GET") else kwargs.get("request")
+    next_path = next_url
+    if request_obj and hasattr(request_obj, "GET"):
+        next_path = request_obj.GET.get("next", next_url)
+    elif isinstance(request, str) and request:
+        next_path = request
+
     if next_path:
         context["url_params"] = f"?next={next_path}"
 
     template = get_template("pretalx_sso/login.html")
-    html = template.render(context=context, request=request)
+    html = template.render(context=context, request=request_obj)
     return html
 
 
