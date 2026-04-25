@@ -7,4 +7,13 @@ localecompile:
 localegen:
 	django-admin makemessages -l de_DE -i build -i dist -i "*egg*" $(LNGS)
 
-.PHONY: all localecompile localegen
+style:
+	isort .
+	flake8 .
+	black .
+	find -name "*.html" | xargs djhtml
+	check-manifest .
+	python -m build
+	twine check dist/*
+
+.PHONY: all localecompile localegen style

@@ -21,8 +21,7 @@ def pretalx_sso_settings(sender, request, **kwargs):
                 "plugins:pretalx_sso:settings",
                 kwargs={"event": request.event.slug},
             ),
-            "active": request.resolver_match.url_name
-            == "plugins:pretalx_sso:settings",
+            "active": request.resolver_match.url_name == "plugins:pretalx_sso:settings",
         }
     ]
 
@@ -46,7 +45,11 @@ def render_login_auth_options(sender, request, next_url=None, **kwargs):
             for idp_name, idp_settings in saml_idps.items():
                 idp_label = idp_name
                 if isinstance(idp_settings, dict):
-                    idp_label = idp_settings.get("name") or idp_settings.get("entity_id") or idp_name
+                    idp_label = (
+                        idp_settings.get("name")
+                        or idp_settings.get("entity_id")
+                        or idp_name
+                    )
 
                 params = {"idp": idp_name}
                 if next_path:
@@ -55,7 +58,11 @@ def render_login_auth_options(sender, request, next_url=None, **kwargs):
                 context["backend_options"].append(
                     {
                         "backend": class_name,
-                        "label": friendly_name if len(saml_idps) == 1 else f"{friendly_name} ({idp_label})",
+                        "label": (
+                            friendly_name
+                            if len(saml_idps) == 1
+                            else f"{friendly_name} ({idp_label})"
+                        ),
                         "url_params": f"?{urlencode(params)}",
                     }
                 )

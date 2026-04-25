@@ -36,7 +36,11 @@ version = {attr = "pretalx_sso.__version__"}
 include = ["pretalx*"]
 
 [tool.check-manifest]
-ignore = [".*"]
+ignore = [
+  ".*",
+  ".devcontainer",
+  ".devcontainer/**",
+]
 
 [tool.semantic_release]
 version_variables = ["pretalx_sso/__init__.py:__version__"]

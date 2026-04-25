@@ -3,4 +3,6 @@ recursive-include pretalx_sso/templates *
 exclude pretalx_sso/locale/django.pot
 recursive-include pretalx_sso/locale *
 recursive-include pretalx_sso *.py
+recursive-include pretalx_sso *.md
 include Makefile
+include *.md

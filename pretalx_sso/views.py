@@ -1,12 +1,9 @@
-from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME, login
 from django.contrib.auth.decorators import login_required
-from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
-from pretalx.common.views.mixins import PermissionRequired
 from social_core.actions import do_auth, do_complete, do_disconnect
 
 from .utils import all_backends, backend_friendly_name, maybe_require_post, psa
@@ -27,17 +24,17 @@ class SingleSignOnSettingsView(TemplateView):
         context = super().get_context_data(**kwargs)
         # Get all configured backends and their friendly names
         backends = all_backends()
-        context['idps'] = [
+        context["idps"] = [
             {
-                'name': backend_friendly_name(backend_name),
-                'backend_name': backend_name,
-                'module': backend_class.__module__,
-                'class': backend_class.__name__,
+                "name": backend_friendly_name(backend_name),
+                "backend_name": backend_name,
+                "module": backend_class.__module__,
+                "class": backend_class.__name__,
             }
             for backend_name, backend_class in backends.items()
         ]
         # Sort by friendly name for better readability
-        context['idps'] = sorted(context['idps'], key=lambda x: x['name'])
+        context["idps"] = sorted(context["idps"], key=lambda x: x["name"])
         return context
 
 

@@ -15,9 +15,7 @@ from social_core.utils import get_strategy, module_member, setting_name
 STRATEGY = getattr(
     settings, setting_name("STRATEGY"), "pretalx_sso.strategy.DjangoStrategy"
 )
-STORAGE = getattr(
-    settings, setting_name("STORAGE"), "pretalx_sso.models.DjangoStorage"
-)
+STORAGE = getattr(settings, setting_name("STORAGE"), "pretalx_sso.models.DjangoStorage")
 REQUIRE_POST = setting_name("REQUIRE_POST")
 
 Strategy = module_member(STRATEGY)

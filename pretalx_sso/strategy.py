@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.contenttypes.models import ContentType
@@ -10,7 +12,6 @@ from django.utils.encoding import force_str
 from django.utils.functional import Promise
 from django.utils.translation import get_language
 from social_core.strategy import BaseStrategy, BaseTemplateStrategy
-import json
 
 DEFAULT_SETTINGS = {
     "USER_FIELD_MAPPING": {"fullname": "name"},
@@ -30,36 +31,34 @@ DEFAULT_SETTINGS = {
         # format to create the user instance later. In some cases the details are
         # already part of the auth response from the provider, but sometimes this
         # could hit a provider API.
-        'social_core.pipeline.social_auth.social_details',
+        "social_core.pipeline.social_auth.social_details",
         # Get the social uid from whichever service we're authing thru. The uid is
         # the unique identifier of the given user in the provider.
-        'social_core.pipeline.social_auth.social_uid',
+        "social_core.pipeline.social_auth.social_uid",
         # Verifies that the current auth process is valid within the current
         # project, this is where emails and domains whitelists are applied (if
         # defined).
-        'social_core.pipeline.social_auth.auth_allowed',
+        "social_core.pipeline.social_auth.auth_allowed",
         # Checks if the current social-account is already associated in the site.
-        'social_core.pipeline.social_auth.social_user',
+        "social_core.pipeline.social_auth.social_user",
         # Make up a username for this person, appends a random string at the end if
         # there's any collision.
-        'social_core.pipeline.user.get_username',
+        "social_core.pipeline.user.get_username",
         # CUSTOM: Check if we should associate based on email and trust settings
-        'pretalx_sso.pipeline.associate_by_email_if_trusted',
+        "pretalx_sso.pipeline.associate_by_email_if_trusted",
         # Create a user account if we haven't found one yet.
-        'social_core.pipeline.user.create_user',
+        "social_core.pipeline.user.create_user",
         # Create the record that associates the social account with the user.
-        'social_core.pipeline.social_auth.associate_user',
+        "social_core.pipeline.social_auth.associate_user",
         # Populate the extra_data field in the social record with the values
         # specified by settings (and the default ones like access_token, etc).
-        'social_core.pipeline.social_auth.load_extra_data',
+        "social_core.pipeline.social_auth.load_extra_data",
         # Update the user record with any changed info from the auth service.
-        'social_core.pipeline.user.user_details',
+        "social_core.pipeline.user.user_details",
     ),
 }
 
-plugin_cfg_settings = getattr(settings, "PLUGIN_SETTINGS", {}).get(
-    "pretalx_sso", {}
-)
+plugin_cfg_settings = getattr(settings, "PLUGIN_SETTINGS", {}).get("pretalx_sso", {})
 plugin_settings = DEFAULT_SETTINGS.copy()
 # cfg file makes all settings lowercase, so we need to convert them back to uppercase, and merge them with the defaults
 for setting_lower, value in plugin_cfg_settings.items():
@@ -72,7 +71,11 @@ for setting_lower, value in plugin_cfg_settings.items():
         except (json.JSONDecodeError, TypeError):
             pass
     # Merge dicts, otherwise override
-    if setting in plugin_settings and isinstance(plugin_settings[setting], dict) and isinstance(value, dict):
+    if (
+        setting in plugin_settings
+        and isinstance(plugin_settings[setting], dict)
+        and isinstance(value, dict)
+    ):
         plugin_settings[setting].update(value)
     else:
         plugin_settings[setting] = value
