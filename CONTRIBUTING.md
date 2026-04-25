@@ -84,3 +84,11 @@ You can auto-fix some of these issues by running::
     isort .
     black .
     djhtml .
+
+## Troubleshooting
+
+## Rebuilding the DevContainer fails.
+
+As all containers in this project share the same network stack, the have to be stopped and removed in a certain order. Otherwise, your container engine might fail to rebuild the DevContainer with an error like ` Error: container <container_1> has dependent containers which must be removed before it: <container_2>, <container_3>: container already exists`.
+
+Please delete stop and remove in this case the containers manually, `saml-provider-mock` and `oidc-provider-mock` before you stop and remove `devcontainer`.
