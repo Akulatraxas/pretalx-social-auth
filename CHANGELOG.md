@@ -1,6 +1,16 @@
 # CHANGELOG
 
 
+## v1.0.0-alpha.3 (2026-05-01)
+
+### Bug Fixes
+
+- Resolve styling issues
+  ([`5a9b577`](https://github.com/tjarbo/pretalx-social-auth/commit/5a9b577caa2c274d05ad464068ca50e4306f2151))
+
+Co-authored-by: Copilot <copilot@github.com>
+
+
 ## v1.0.0-alpha.2 (2026-05-01)
 
 ### Bug Fixes
