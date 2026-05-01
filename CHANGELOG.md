@@ -1,6 +1,35 @@
 # CHANGELOG
 
 
+## v1.0.0-alpha.2 (2026-05-01)
+
+### Bug Fixes
+
+- Add missing idp parameter to enable SAML authentication
+  ([`d2386f9`](https://github.com/tjarbo/pretalx-social-auth/commit/d2386f9bc1c274eecb190e226521628c99ff31dc))
+
+Co-authored-by: Copilot <copilot@github.com>
+
+- Resolve issues where request is a string and not a dictionary
+  ([`a247b86`](https://github.com/tjarbo/pretalx-social-auth/commit/a247b86af997db8e8f3f86db6698c8fa2c11f54f))
+
+### Chores
+
+- Add new mock saml provider for local development
+  ([`5dc4586`](https://github.com/tjarbo/pretalx-social-auth/commit/5dc4586d2b61cf9e82bce0aeee1cce33eab2a87b))
+
+### Documentation
+
+- Add inital version of AGENTS.md
+  ([`f83a588`](https://github.com/tjarbo/pretalx-social-auth/commit/f83a588c928ef338df9065c7082941a70a137219))
+
+- Add installation instructions
+  ([`cdfea64`](https://github.com/tjarbo/pretalx-social-auth/commit/cdfea645b2a679805c7599f245fe786e69326315))
+
+- Added troubleshooting section to CONTRIBUTING.md due to new SAML sidecar-container
+  ([`5f22b6d`](https://github.com/tjarbo/pretalx-social-auth/commit/5f22b6dcebf71ed765376cbedbc145dbabaa1ecf))
+
+
 ## v1.0.0-alpha.1 (2026-03-24)
 
 ### Bug Fixes
