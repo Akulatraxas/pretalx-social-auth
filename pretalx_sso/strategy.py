@@ -108,7 +108,7 @@ class DjangoStrategy(BaseStrategy):
     def get_setting(self, name):
         value = plugin_settings.get(name)
         if value is None:
-            value = getattr(settings, name)
+            value = getattr(settings, name, None)
         # Force text on URL named settings that are instance of Promise
         if name.endswith("_URL"):
             if isinstance(value, Promise):

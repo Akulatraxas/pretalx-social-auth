@@ -16,8 +16,8 @@ dependencies = [
 ]
 
 [project.urls]
-homepage = "https://github.com/tjarbo/pretalx-single-sign-on"
-repository = "https://github.com/tjarbo/pretalx-single-sign-on.git"
+homepage = "https://github.com/akulatraxas/pretalx-single-sign-on"
+repository = "https://github.com/akulatraxas/pretalx-single-sign-on.git"
 
 [project.entry-points."pretalx.plugin"]
 pretalx_sso = "pretalx_sso:PretalxPluginMeta"
