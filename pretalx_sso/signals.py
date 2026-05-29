@@ -37,7 +37,7 @@ def render_login_auth_options(sender, request, next_url=None, **kwargs):
     elif isinstance(request, str) and request:
         next_path = request
 
-    saml_idps = load_strategy().get_setting("SOCIAL_AUTH_SAML_ENABLED_IDPS") or {}
+    saml_idps = load_strategy().setting("SOCIAL_AUTH_SAML_ENABLED_IDPS", default={}) or {}
     for class_name, be_class in all_backends().items():
         friendly_name = backend_friendly_name(be_class)
 
