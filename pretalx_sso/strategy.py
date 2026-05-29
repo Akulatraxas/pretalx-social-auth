@@ -106,9 +106,12 @@ class DjangoStrategy(BaseStrategy):
         super().__init__(storage, tpl)
 
     def get_setting(self, name):
-        value = plugin_settings.get(name)
-        if value is None:
-            value = getattr(settings, name, None)
+        _missing = object()
+        value = plugin_settings.get(name, _missing)
+        if value is _missing:
+            # Raises AttributeError if absent — this is the contract social_core expects
+            # so it can fall back to its own defaults (e.g. for BACKENDS, PIPELINE, etc.)
+            value = getattr(settings, name)
         # Force text on URL named settings that are instance of Promise
         if name.endswith("_URL"):
             if isinstance(value, Promise):
@@ -216,6 +219,19 @@ class DjangoStrategy(BaseStrategy):
             ModelClass = ctype.model_class()
             val = ModelClass._default_manager.get(pk=val["pk"])
         return val
+
+    def get_backends(self):
+        """Return the list of authentication backends.
+
+        social_core calls setting('BACKENDS', default=None), which returns None
+        when SOCIAL_AUTH_BACKENDS is not explicitly configured. Fall back to
+        Django's AUTHENTICATION_BACKENDS so backends registered there (e.g. via
+        the social-auth pipeline) are always discoverable.
+        """
+        backends = super().get_backends()
+        if backends is None:
+            backends = getattr(settings, "AUTHENTICATION_BACKENDS", None)
+        return backends
 
     def get_language(self):
         """Return current language"""
