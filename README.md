@@ -2,7 +2,7 @@
 
 This is a plugin for [pretalx](https://github.com/pretalx/pretalx). It provides an integration with [Python Social Auth](https://github.com/python-social-auth/social-core), allowing users to log in with third-party identity providers.
 
-It is of fork of [pretalx-social-auth](https://github.com/adamskrz/pretalx-social-auth), which itself is originally based on [social_django](https://github.com/python-social-auth/social-app-django) from the Python Social Auth project, but with the removal of deprecated features and the addition of pretalx-specific settings.
+It is of fork of [pretalx-social-auth-by-tjarbo](https://github.com/tjarbo/pretalx-social-auth), which itself is  a fork of [pretalx-social-auth](https://github.com/adamskrz/pretalx-social-auth), which itself is originally based on [social_django](https://github.com/python-social-auth/social-app-django) from the Python Social Auth project, but with the removal of deprecated features and the addition of pretalx-specific settings.
 
 ## Screenshots
 
@@ -13,30 +13,27 @@ It is of fork of [pretalx-social-auth](https://github.com/adamskrz/pretalx-socia
 You can install the plugin from PyPI or directly from GitHub.
 
 ```bash
-# Stable release from PyPI
-pip install pretalx-sso
-
-# Pre-release from PyPI
-# pip install --pre pretalx-sso
-
 # Pre-release from Git (example tag)
-# pip install git+https://github.com/tjarbo/pretalx-social-auth.git@v1.2.0-alpha.1
+# pip install git+https://github.com/akulatraxas/pretalx-social-auth.git@FIX_aku-saml
 ```
 
 ## Configuration
 
 In your `pretalx.cfg` file, add all the auth backends you need as a comma-separated list. Then, add the backend-specific settings to the `[plugin:pretalx_sso]` section. You can find the backend name and required settings in the [python-social-auth documentation](https://python-social-auth.readthedocs.io/en/latest/backends/index.html).
 
-Example:
+Example for OIDC:
 
 ```ini
 [authentication]
-additional_auth_backends=social_core.backends.microsoft.MicrosoftOAuth2,social_core.backends.open_id.OpenIdAuth
+additional_auth_backends = social_core.backends.open_id_connect.OpenIdConnectAuth
 
 [plugin:pretalx_sso]
-SOCIAL_AUTH_MICROSOFT_GRAPH_KEY=xxxxx-xxxxx-xxxxx-xxxxx-xxxxxxxxxx
-SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxx
-TRUST_IDP_EMAILS=False
+SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = https://youridp.yourdomain.eu
+SOCIAL_AUTH_OIDC_KEY = pretalx-oidc-client
+SOCIAL_AUTH_OIDC_SECRET = some-secure-random-secret-string
+TRUST_IDP_EMAILS = True
+; Optional but recommended: pre-verify email logic since Dex handles it
+SOCIAL_AUTH_OIDC_VERIFY_EMAIL = True
 ```
 
 Due to how Social Auth is configured with API keys in `settings.py`, **this doesn't support configuring providers (backends) on a per-event basis**. This means particular care should be taken where custom event domains are in use, as some providers require a different API key per domain (or adding valid redirect URLs).
