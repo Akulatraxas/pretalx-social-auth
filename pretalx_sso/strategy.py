@@ -16,6 +16,8 @@ from social_core.strategy import BaseStrategy, BaseTemplateStrategy
 DEFAULT_SETTINGS = {
     "USER_FIELD_MAPPING": {"fullname": "name"},
     "IMMUTABLE_USER_FIELDS": ["name"],
+    "IDP_GROUPS_CLAIM_KEY": "groups",
+    "IDP_GROUP_TO_PRETALX_TEAM": {},
     "BACKEND_NAME_MAPPING": {
         "discord": "Discord",
         "discourse": "Discourse",
@@ -55,6 +57,9 @@ DEFAULT_SETTINGS = {
         "social_core.pipeline.social_auth.load_extra_data",
         # Update the user record with any changed info from the auth service.
         "social_core.pipeline.user.user_details",
+        # CUSTOM: Sync IDP group memberships to pretalx Teams (add-only).
+        # Requires IDP_GROUP_TO_PRETALX_TEAM to be configured.
+        "pretalx_sso.pipeline.sync_teams_from_idp",
     ),
 }
 

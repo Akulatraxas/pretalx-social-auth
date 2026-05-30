@@ -69,6 +69,50 @@ Enable this setting only when:
 - Your IDPs enforce email verification
 - You want to prioritize user convenience over strict account separation
 
+## IDP Group-to-Team Sync
+
+When configured, the plugin can automatically add users to pretalx organiser **Teams** based on their group memberships at the identity provider. This happens on every SSO login — group memberships are synced on each authentication.
+
+### How It Works
+
+1. The IDP includes a `groups` claim in the OIDC userinfo/token response (e.g. `["Y6K08PEKXG9Q7ZWJ", "X3M92LQRBN5T8VKZ"]`)
+2. The plugin reads a static mapping from IDP group identifiers to pretalx Team IDs
+3. For each matching group, the user is added to the corresponding pretalx Team
+
+This is **add-only**: users are added to teams but never automatically removed. If a user is removed from an IDP group, they will retain their pretalx Team membership until manually removed.
+
+The raw IDP groups are also stored in `UserSocialAuth.extra_data["idp_groups"]` for auditing and debugging.
+
+### Configuration
+
+Add the group-to-team mapping to the `[plugin:pretalx_sso]` section in your `pretalx.cfg`:
+
+```ini
+[plugin:pretalx_sso]
+# Your existing OIDC backend configuration...
+SOCIAL_AUTH_MYIDP_KEY=your-client-id
+SOCIAL_AUTH_MYIDP_SECRET=your-client-secret
+
+# Ensure the 'groups' scope is requested from your IDP
+SOCIAL_AUTH_MYIDP_SCOPE=["openid", "profile", "email", "groups"]
+
+# Map IDP group identifiers to pretalx Team IDs (primary keys).
+# Format: JSON object where keys are IDP group identifiers and values are Team IDs.
+# You can find Team IDs in the pretalx admin panel or database.
+IDP_GROUP_TO_PRETALX_TEAM={"Y6K08PEKXG9Q7ZWJ": 1, "X3M92LQRBN5T8VKZ": 2}
+```
+
+### Settings Reference
+
+| Setting | Default | Description |
+|---|---|---|
+| `IDP_GROUP_TO_PRETALX_TEAM` | `{}` (disabled) | JSON mapping of IDP group identifiers to pretalx Team IDs. When empty, team sync is disabled. |
+| `IDP_GROUPS_CLAIM_KEY` | `groups` | The key in the OIDC response that contains the list of group identifiers. Only change this if your IDP uses a different claim name. |
+
+### Security Considerations
+
+This feature means that anyone who can control IDP group memberships can grant pretalx organiser permissions. This is by design — the IDP is treated as the source of truth for group memberships. Only enable this feature when you fully trust your identity provider.
+
 ## Release Model
 
 This project follows a **trunk-based development** workflow with two persistent branches:
