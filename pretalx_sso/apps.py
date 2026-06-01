@@ -10,7 +10,7 @@ class PluginApp(AppConfig):
 
     class PretalxPluginMeta:
         name = gettext_lazy("Single Sign-On for pretalx")
-        author = "Tjark <tjarbo/>"
+        author = "Akulatraxas <akulatraxas/>"
         description = gettext_lazy(
             "Enable Single Sign-On capabilities on your pretalx instance."
         )
