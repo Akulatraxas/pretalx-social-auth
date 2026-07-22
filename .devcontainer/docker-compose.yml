@@ -19,7 +19,7 @@ services:
       - ./saml-provider-mock.env
   
   devcontainer:
-    image: ghcr.io/tjarbo/pretalx-devcontainer/devcontainer:v2
+    image: ghcr.io/tjarbo/pretalx-devcontainer/devcontainer:main
     volumes:
       - ../:/workspace:cached
     command: sleep infinity
