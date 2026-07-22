@@ -1,6 +1,6 @@
 services:
   oidc-provider-mock:
-    image: ghcr.io/geigerzaehler/oidc-provider-mock:0.4.1
+    image: ghcr.io/geigerzaehler/oidc-provider-mock:0.4.6
     network_mode: "service:devcontainer"
     ports:
       - "9400:9400"
