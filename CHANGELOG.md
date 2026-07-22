@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v1.0.0-alpha.4 (2026-07-22)
+
+### Bug Fixes
+
+- Handle missing settings gracefully in DjangoStrategy
+  ([`eccba77`](https://github.com/tjarbo/pretalx-social-auth/commit/eccba777fe38f84d3f75344d90c29e3ca0400313))
+
+Fixes #2
+
+- Update oidc-provider-mock to latest versions
+  ([`9091fa5`](https://github.com/tjarbo/pretalx-social-auth/commit/9091fa504f94fcfed2e212dba699773138f3a3ff))
+
+### Continuous Integration
+
+- Use main for testing the devcontainer
+  ([`cab5ca7`](https://github.com/tjarbo/pretalx-social-auth/commit/cab5ca71d91d5057d212fb096768a3364edd3512))
+
+
 ## v1.0.0-alpha.3 (2026-05-01)
 
 ### Bug Fixes
